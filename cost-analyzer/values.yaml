@@ -334,9 +334,9 @@ kubecostFrontend:
     requests:
       cpu: "10m"
       memory: "55Mi"
-    # limits:
-    #   cpu: "100m"
-    #   memory: "256Mi"
+    limits:
+      cpu: "100m"
+      memory: "256Mi"
   livenessProbe:
     enabled: true
     initialDelaySeconds: 30
@@ -376,10 +376,13 @@ kubecostMetrics:
     # Adds the default Prometheus scrape annotations to the metrics exporter service.
     # Set to false and use service.annotations (below) to set custom scrape annotations.
     prometheusScrape: true
-    resources: {}
-      # requests:
-      #  cpu: "200m"
-      #  memory: "55Mi"
+    resources:
+      requests:
+        cpu: "200m"
+        memory: "55Mi"
+      limits:
+        cpu: "500m"
+        memory: "500Mi"
     ## Node tolerations for server scheduling to nodes with taints
     ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
     tolerations: []
@@ -489,9 +492,9 @@ kubecostModel:
     requests:
       cpu: "200m"
       memory: "55Mi"
-    #limits:
-    #  cpu: "800m"
-    #  memory: "256Mi"
+    limits:
+      cpu: "800m"
+      memory: "256Mi"
   livenessProbe:
     enabled: false
     initialDelaySeconds: 30
@@ -660,13 +663,13 @@ prometheus:
     # NOTE: This does not affect the external_labels set in prometheus config.
     # clusterIDConfigmap: cluster-id-configmap
 
-    resources: {}
-    # limits:
-    #   cpu: 500m
-    #   memory: 512Mi
-    # requests:
-    #   cpu: 500m
-    #   memory: 512Mi
+    resources: 
+      limits:
+        cpu: 500m
+        memory: 512Mi
+      requests:
+        cpu: 500m
+        memory: 512Mi
     global:
       scrape_interval: 1m
       scrape_timeout: 60s
@@ -925,6 +928,9 @@ kubecostDeployment:
         ## once the pod has run for 24 hours.
         cpu: 1000m
         memory: 500Mi
+      limits:
+        cpu: 1500m
+        memory: 1024Mi
     ## default storage class
     storageClass: ""
     databaseVolumeSize: 100Gi
@@ -982,10 +988,13 @@ supportNFS: false
 # initChownDataImage ensures all Kubecost filepath permissions on PV or local storage are set up correctly.
 initChownDataImage: "busybox" # Supports a fully qualified Docker image, e.g. registry.hub.docker.com/library/busybox:latest
 initChownData:
-  resources: {}
-    #requests:
-    #  cpu: "50m"
-    #  memory: "20Mi"
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "20Mi"
+    limits:
+      cpu: "200m"
+      memory: "100Mi"
 
 grafana:
   # namespace_datasources: kubecost # override the default namespace here
@@ -1079,10 +1088,13 @@ federatedETL:
     ## Optional. You can use the Kubecost savings report for 'Right-size your
     ## container requests' to determine the recommended resource requests once
     ## the pod has run for 24 hours.
-    resources: {}
-      # requests:
-      #   cpu: 100m
-      #   memory: 500Mi
+    resources:
+      requests:
+        cpu: 100m
+        memory: 500Mi
+      limits:
+        cpu: 500m
+        memory: 1024Mi
 
 kubecostAdmissionController:
   enabled: false

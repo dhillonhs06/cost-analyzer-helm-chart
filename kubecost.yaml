@@ -20239,7 +20239,12 @@ spec:
               containerPort: 9100
               hostPort: 9100
           resources:
-            {}
+            requests:
+              cpu: "500m"
+              memory: "512Mi"
+            limits:
+              cpu: "768m"
+              memory: "1024Mi"
           volumeMounts:
             - name: proc
               mountPath: /host/proc
