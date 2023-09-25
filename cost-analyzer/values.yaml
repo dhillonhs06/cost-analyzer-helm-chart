@@ -381,8 +381,8 @@ kubecostMetrics:
         cpu: "200m"
         memory: "55Mi"
       limits:
-        cpu: "500m"
-        memory: "200Mi"
+        cpu: "300m"
+        memory: "100Mi"
     ## Node tolerations for server scheduling to nodes with taints
     ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
     tolerations: []

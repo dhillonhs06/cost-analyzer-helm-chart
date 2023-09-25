@@ -20228,7 +20228,7 @@ spec:
       dnsPolicy: "ClusterFirstWithHostNet"
       containers:
         - name: prometheus-node-exporter
-          image: "registry-dub.tools.3stripes.net/pea-coreintegration/prom/node-exporter:v1.5.0"
+          image: "registry.tools.3stripes.net/pea-coreintegration/prom/node-exporter:v1.5.0"
           imagePullPolicy: "IfNotPresent"
           imagePullSecrets:
             - name: registry-tools-3stripes-net-cred
@@ -20295,7 +20295,7 @@ spec:
         runAsUser: 472
       containers:
         - name: grafana-sc-dashboard
-          image: "registry-dub.tools.3stripes.net/pea-coreintegration/kiwigrid/k8s-sidecar:1.25.0"
+          image: "registry.tools.3stripes.net/pea-coreintegration/kiwigrid/k8s-sidecar:1.25.0"
           imagePullPolicy: IfNotPresent
           imagePullSecrets:
             - name: registry-tools-3stripes-net-cred
@@ -20531,7 +20531,7 @@ spec:
       serviceAccountName: kubecost-prometheus-server
       containers:
         - name: prometheus-server-configmap-reload
-          image: "registry-dub.tools.3stripes.net/pea-coreintegration/jimmidyson/configmap-reload:v0.7.1"
+          image: "registry.tools.3stripes.net/pea-coreintegration/jimmidyson/configmap-reload:v0.7.1"
           imagePullPolicy: "IfNotPresent"
           imagePullSecrets:
             - name: registry-tools-3stripes-net-cred
