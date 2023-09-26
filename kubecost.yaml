@@ -20312,7 +20312,7 @@ spec:
             - name: sc-dashboard-volume
               mountPath: "/tmp/dashboards"
         - name: grafana
-          image: "grafana/grafana:9.4.7"
+          image: "registry.tools.3stripes.net/pea-coreintegration/grafana/grafana:9.4.7"
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: config
@@ -20546,7 +20546,7 @@ spec:
               readOnly: true
 
         - name: prometheus-server
-          image: "quay.io/prometheus/prometheus:v2.35.0"
+          image: "registry.tools.3stripes.net/pea-coreintegration/quay.io/prometheus/prometheus:v2.35.0"
           imagePullPolicy: "IfNotPresent"
           args:
             - --storage.tsdb.retention.time=15d
@@ -20648,7 +20648,7 @@ spec:
             claimName: kubecost-cost-analyzer
       initContainers:
       containers:
-        - image: gcr.io/kubecost1/cost-model:prod-1.106.0
+        - image: registry.tools.3stripes.net/pea-coreintegration/gcr.io/kubecost1/cost-model:prod-1.106.0
         
           name: cost-model
           imagePullPolicy: Always
@@ -20798,7 +20798,7 @@ spec:
                 configMapKeyRef:
                   name: kubecost-cost-analyzer
                   key: kubecost-token
-        - image: gcr.io/kubecost1/frontend:prod-1.106.0
+        - image: registry.tools.3stripes.net/pea-coreintegration/gcr.io/kubecost1/frontend:prod-1.106.0
         
           env:
             - name: GET_HOSTS_FROM

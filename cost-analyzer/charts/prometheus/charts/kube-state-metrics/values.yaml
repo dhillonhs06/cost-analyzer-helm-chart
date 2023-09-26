@@ -38,7 +38,8 @@ serviceAccount:
   name:
   # Reference to one or more secrets to be used when pulling images
   # ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
-  imagePullSecrets: []
+  imagePullSecrets:
+    - name: registry-tools-3stripes-net-cred
 
 prometheus:
   monitor:

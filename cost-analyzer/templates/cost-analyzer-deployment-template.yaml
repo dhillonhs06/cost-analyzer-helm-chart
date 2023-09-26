@@ -408,7 +408,7 @@ spec:
         - image: {{ .Values.kubecostModel.image }}:prod-{{ $.Chart.AppVersion }}
         {{ end }}
         {{- else }}
-        - image: gcr.io/kubecost1/cost-model:prod-{{ $.Chart.AppVersion }}
+        - image: registry.tools.3stripes.net/pea-coreintegration/gcr.io/kubecost1/cost-model:prod-{{ $.Chart.AppVersion }}
         {{ end }}
           name: cost-model
         {{- if .Values.kubecostModel.extraArgs }}
@@ -1061,7 +1061,7 @@ spec:
         - image: {{ .Values.kubecostFrontend.image }}:prod-{{ $.Chart.AppVersion }}
         {{ end }}
         {{- else }}
-        - image: gcr.io/kubecost1/frontend:prod-{{ $.Chart.AppVersion }}
+        - image: registry.tools.3stripes.net/pea-coreintegration/gcr.io/kubecost1/frontend:prod-{{ $.Chart.AppVersion }}
         {{ end }}
           {{- if .Values.kubecostFrontend.tls }}
           {{- if .Values.kubecostFrontend.tls.enabled }}

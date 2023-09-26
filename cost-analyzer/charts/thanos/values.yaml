@@ -131,13 +131,13 @@ store:
     runAsNonRoot: true
     runAsUser: 1001
 
-  resources: {}
-  #  limits:
-  #    cpu: 2000m
-  #    memory: 16Gi
-  #  requests:
-  #    cpu: 1000m
-  #    memory: 4Gi
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 16Gi
+    requests:
+      cpu: 1000m
+      memory: 4Gi
   #
   # Node tolerations for server scheduling to nodes with taints
   # Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
@@ -303,13 +303,13 @@ queryFrontend:
     runAsNonRoot: true
     runAsUser: 1001
 
-  resources: {}
-  #  limits:
-  #    cpu: 2000m
-  #    memory: 16Gi
-  #  requests:
-  #    cpu: 1000m
-  #    memory: 4Gi
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 16Gi
+    requests:
+      cpu: 1000m
+      memory: 4Gi
   #
   # Node tolerations for server scheduling to nodes with taints
   # Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
@@ -470,13 +470,13 @@ query:
     runAsNonRoot: true
     runAsUser: 1001
 
-  resources: {}
-  #  limits:
-  #    cpu: 2000m
-  #    memory: 16Gi
-  #  requests:
-  #    cpu: 1000m
-  #    memory: 4Gi
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 16Gi
+    requests:
+      cpu: 1000m
+      memory: 4Gi
   #
   # Node tolerations for server scheduling to nodes with taints
   # Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
@@ -599,13 +599,13 @@ compact:
     runAsNonRoot: true
     runAsUser: 1001
 
-  resources: {}
-  #  limits:
-  #    cpu: 2000m
-  #    memory: 16Gi
-  #  requests:
-  #    cpu: 1000m
-  #    memory: 4Gi
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 16Gi
+    requests:
+      cpu: 1000m
+      memory: 4Gi
   #
   # Node tolerations for server scheduling to nodes with taints
   # Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
@@ -706,13 +706,13 @@ bucket:
     runAsNonRoot: true
     runAsUser: 1001
 
-  resources: {}
-  #  limits:
-  #    cpu: 2000m
-  #    memory: 16Gi
-  #  requests:
-  #    cpu: 1000m
-  #    memory: 4Gi
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 16Gi
+    requests:
+      cpu: 1000m
+      memory: 4Gi
   #
   # Node tolerations for server scheduling to nodes with taints
   # Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/

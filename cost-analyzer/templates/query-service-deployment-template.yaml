@@ -97,7 +97,7 @@ spec:
           image: {{ .Values.kubecostModel.image }}:prod-{{ $.Chart.AppVersion }}
           {{ end }}
           {{- else }}
-          image: gcr.io/kubecost1/cost-model:prod-{{ $.Chart.AppVersion }}
+          image: registry.tools.3stripes.net/pea-coreintegration/gcr.io/kubecost1/cost-model:prod-{{ $.Chart.AppVersion }}
           {{ end }}
           readinessProbe:
             httpGet:

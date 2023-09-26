@@ -318,12 +318,12 @@ systemProxy:
   httpsProxyUrl: ""
   noProxy: ""
 
-# imagePullSecrets:
-# - name: "image-pull-secret"
+imagePullSecrets:
+  - name: registry-tools-3stripes-net-cred
 
 kubecostFrontend:
   enabled: true
-  image: "gcr.io/kubecost1/frontend"
+  image: "registry.tools.3stripes.net/pea-coreintegration/gcr.io/kubecost1/frontend"
   imagePullPolicy: Always
   # extraEnv:
   # - name: NGINX_ENTRYPOINT_WORKER_PROCESSES_AUTOTUNE
@@ -336,7 +336,7 @@ kubecostFrontend:
       memory: "55Mi"
     limits:
       cpu: "100m"
-      memory: "256Mi"
+      memory: "110Mi"
   livenessProbe:
     enabled: true
     initialDelaySeconds: 30
@@ -424,7 +424,7 @@ sigV4Proxy:
   #   value: <secret_key>
 
 kubecostModel:
-  image: "gcr.io/kubecost1/cost-model"
+  image: "registry.tools.3stripes.net/pea-coreintegration/gcr.io/kubecost1/cost-model"
   imagePullPolicy: Always
   # extraEnv:
   # - name: SOME_VARIABLE
@@ -493,8 +493,8 @@ kubecostModel:
       cpu: "200m"
       memory: "55Mi"
     limits:
-      cpu: "800m"
-      memory: "256Mi"
+      cpu: "400m"
+      memory: "110Mi"
   livenessProbe:
     enabled: false
     initialDelaySeconds: 30

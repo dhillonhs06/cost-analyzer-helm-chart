@@ -24,7 +24,7 @@ livenessProbe:
   failureThreshold: 10
 
 image:
-  repository: grafana/grafana
+  repository: registry.tools.3stripes.net/pea-coreintegration/grafana/grafana
   tag: 9.4.7
   pullPolicy: IfNotPresent
 
@@ -75,13 +75,13 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources: {}
-#  limits:
-#    cpu: 100m
-#    memory: 128Mi
-#  requests:
-#    cpu: 100m
-#    memory: 128Mi
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
 
 ## Node labels for pod assignment
 ## ref: https://kubernetes.io/docs/user-guide/node-selection/
@@ -257,16 +257,16 @@ smtp:
 ## Requires at least Grafana 5 to work and can't be used together with parameters dashboardProviders, datasources and dashboards
 sidecar:
   image:
-    repository: kiwigrid/k8s-sidecar
+    repository: registry.tools.3stripes.net/pea-coreintegration/kiwigrid/k8s-sidecar
     tag: 1.25.1
     pullPolicy: IfNotPresent
   resources:
-#   limits:
-#     cpu: 100m
-#     memory: 100Mi
-#   requests:
-#     cpu: 50m
-#     memory: 50Mi
+    limits:
+      cpu: 100m
+      memory: 100Mi
+    requests:
+      cpu: 50m
+      memory: 50Mi
   dashboards:
     enabled: false
     # label that the configmaps with dashboards are marked with
