@@ -1,9 +1,11 @@
 # Default values for kube-state-metrics.
 prometheusScrape: true
 image:
-  repository: registry.k8s.io/kube-state-metrics/kube-state-metrics
+  repository: registry.tools.3stripes.net/pea-coreintegration/registry.k8s.io/kube-state-metrics/kube-state-metrics
   tag: v1.9.8
   pullPolicy: IfNotPresent
+imagePullSecrets:
+    - name: registry-tools-3stripes-net-cred
 
 # If set to true, this will deploy kube-state-metrics as a StatefulSet and the data
 # will be automatically sharded across <.Values.replicas> pods using the built-in

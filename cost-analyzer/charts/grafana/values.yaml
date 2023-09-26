@@ -27,6 +27,8 @@ image:
   repository: registry.tools.3stripes.net/pea-coreintegration/grafana/grafana
   tag: 9.4.7
   pullPolicy: IfNotPresent
+imagePullSecrets:
+  - name: registry-tools-3stripes-net-cred
 
   ## Optionally specify an array of imagePullSecrets.
   ## Secrets must be manually created in the namespace.
@@ -40,10 +42,11 @@ securityContext:
   fsGroup: 472
 
 downloadDashboardsImage:
-  repository: curlimages/curl
+  repository: registry.tools.3stripes.net/pea-coreintegration/curlimages/curl
   tag: latest
   pullPolicy: IfNotPresent
-
+  imagePullSecrets:
+    - name: registry-tools-3stripes-net-cred
 ## Pod Annotations
 # podAnnotations: {}
 
@@ -260,6 +263,8 @@ sidecar:
     repository: registry.tools.3stripes.net/pea-coreintegration/kiwigrid/k8s-sidecar
     tag: 1.25.1
     pullPolicy: IfNotPresent
+  imagePullSecrets:
+    - name: registry-tools-3stripes-net-cred
   resources:
     limits:
       cpu: 100m

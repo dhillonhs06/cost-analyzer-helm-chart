@@ -42,9 +42,11 @@ alertmanager:
   ## alertmanager container image
   ##
   image:
-    repository: quay.io/prometheus/alertmanager
+    repository: registry.tools.3stripes.net/pea-coreintegration/quay.io/prometheus/alertmanager
     tag: v0.25.0
     pullPolicy: IfNotPresent
+  imagePullSecrets:
+    - name: registry-tools-3stripes-net-cred
 
   ## alertmanager priorityClassName
   ##
@@ -325,6 +327,8 @@ configmapReload:
       repository: registry.tools.3stripes.net/pea-coreintegration/jimmidyson/configmap-reload
       tag: v0.9.0
       pullPolicy: IfNotPresent
+    imagePullSecrets:
+      - name: registry-tools-3stripes-net-cred
 
     ## Additional configmap-reload container arguments
     ##
@@ -371,6 +375,8 @@ configmapReload:
       repository: registry.tools.3stripes.net/pea-coreintegration/jimmidyson/configmap-reload
       tag: v0.9.0
       pullPolicy: IfNotPresent
+    imagePullSecrets:
+      - name: registry-tools-3stripes-net-cred
 
     ## Additional configmap-reload container arguments
     ##
@@ -434,6 +440,8 @@ nodeExporter:
     repository: registry.tools.3stripes.net/pea-coreintegration/prom/node-exporter
     tag: v1.5.0
     pullPolicy: IfNotPresent
+  imagePullSecrets:
+    - name: registry-tools-3stripes-net-cred
 
   ## Specify if a Pod Security Policy for node-exporter must be created
   ## Ref: https://kubernetes.io/docs/concepts/policy/pod-security-policy/
@@ -559,6 +567,8 @@ server:
     repository: registry.tools.3stripes.net/pea-coreintegration/quay.io/prometheus/prometheus
     tag: v2.35.0
     pullPolicy: IfNotPresent
+  imagePullSecrets:
+    - name: registry-tools-3stripes-net-cred
 
   ## prometheus server priorityClassName
   ##
@@ -941,9 +951,11 @@ pushgateway:
   ## pushgateway container image
   ##
   image:
-    repository: prom/pushgateway
+    repository: registry.tools.3stripes.net/pea-coreintegration/prom/pushgateway
     tag: v1.5.1
     pullPolicy: IfNotPresent
+  imagePullSecrets:
+    - name: registry-tools-3stripes-net-cred
 
   ## pushgateway priorityClassName
   ##

@@ -37,7 +37,9 @@ global:
     prometheusServerEndpoint: http://localhost:8085/ # The prometheus service endpoint used by kubecost. The calls are forwarded through the GMP Prom proxy side car to the GMP database.
     gmpProxy:
       enabled: false
-      image: gke.gcr.io/prometheus-engine/frontend:v0.4.1-gke.0 # GMP Prometheus proxy image that serve as an endpoint to query metrics from GMP
+      image: registry.tools.3stripes.net/pea-coreintegration/gke.gcr.io/prometheus-engine/frontend:v0.4.1-gke.0 # GMP Prometheus proxy image that serve as an endpoint to query metrics from GMP
+      imagePullSecrets:
+        - name: registry-tools-3stripes-net-cred
       imagePullPolicy: Always
       name: gmp-proxy
       port: 8085
@@ -63,7 +65,9 @@ global:
   mimirProxy:
     enabled: false
     name: mimir-proxy
-    image: nginxinc/nginx-unprivileged
+    image: registry.tools.3stripes.net/pea-coreintegration/nginxinc/nginx-unprivileged
+    imagePullSecrets:
+      - name: registry-tools-3stripes-net-cred
     port: 8085
     mimirEndpoint: $mimir_endpoint #Your Mimir query endpoint. If your Mimir query endpoint is http://example.com/prometheus, replace $mimir_endpoint with http://example.com/
     orgIdentifier: $your_tenant_ID #Your Grafana Mimir tenant ID
@@ -324,6 +328,8 @@ imagePullSecrets:
 kubecostFrontend:
   enabled: true
   image: "registry.tools.3stripes.net/pea-coreintegration/gcr.io/kubecost1/frontend"
+  imagePullSecrets:
+    - name: registry-tools-3stripes-net-cred
   imagePullPolicy: Always
   # extraEnv:
   # - name: NGINX_ENTRYPOINT_WORKER_PROCESSES_AUTOTUNE
@@ -410,7 +416,9 @@ kubecostMetrics:
     extraArgs: []
 
 sigV4Proxy:
-  image: public.ecr.aws/aws-observability/aws-sigv4-proxy:latest
+  image: registry.tools.3stripes.net/pea-coreintegration/public.ecr.aws/aws-observability/aws-sigv4-proxy:latest
+  imagePullSecrets:
+    - name: registry-tools-3stripes-net-cred
   imagePullPolicy: Always
   name: aps
   port: 8005
@@ -425,6 +433,8 @@ sigV4Proxy:
 
 kubecostModel:
   image: "registry.tools.3stripes.net/pea-coreintegration/gcr.io/kubecost1/cost-model"
+  imagePullSecrets:
+    - name: registry-tools-3stripes-net-cred
   imagePullPolicy: Always
   # extraEnv:
   # - name: SOME_VARIABLE
@@ -621,7 +631,9 @@ service:
 remoteWrite:
   postgres:
     enabled: false
-    initImage: "gcr.io/kubecost1/sql-init"
+    initImage: "registry.tools.3stripes.net/pea-coreintegration/gcr.io/kubecost1/sql-init"
+    imagePullSecrets:
+      - name: registry-tools-3stripes-net-cred
     initImagePullPolicy: Always
     installLocal: true
     remotePostgresAddress: "" # ignored if installing locally
@@ -757,7 +769,9 @@ networkCosts:
   enabled: false
   podSecurityPolicy:
     enabled: false
-  image: gcr.io/kubecost1/kubecost-network-costs:v0.16.8
+  image: registry.tools.3stripes.net/pea-coreintegration/gcr.io/kubecost1/kubecost-network-costs:v0.16.8
+  imagePullSecrets:
+    - name: registry-tools-3stripes-net-cred
   imagePullPolicy: Always
   updateStrategy:
     type: RollingUpdate
@@ -940,7 +954,9 @@ kubecostDeployment:
 # Kubecost Cluster Controller for Right Sizing and Cluster Turndown
 clusterController:
   enabled: false
-  image: gcr.io/kubecost1/cluster-controller:v0.12.0
+  image: registry.tools.3stripes.net/pea-coreintegration/gcr.io/kubecost1/cluster-controller:v0.12.0
+  imagePullSecrets:
+    - name: registry-tools-3stripes-net-cred
   imagePullPolicy: Always
   ## PriorityClassName
   ## Ref: https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass
