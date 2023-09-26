@@ -20230,8 +20230,6 @@ spec:
         - name: prometheus-node-exporter
           image: "registry.tools.3stripes.net/pea-coreintegration/prom/node-exporter:v1.5.0"
           imagePullPolicy: "IfNotPresent"
-          imagePullSecrets:
-            - name: registry-tools-3stripes-net-cred
           args:
             - --path.procfs=/host/proc
             - --path.sysfs=/host/sys
@@ -20256,6 +20254,8 @@ spec:
               readOnly: true
       hostNetwork: true
       hostPID: true
+      imagePullSecrets:
+        - name: registry-tools-3stripes-net-cred
       volumes:
         - name: proc
           hostPath:
@@ -20293,12 +20293,12 @@ spec:
       securityContext:
         fsGroup: 472
         runAsUser: 472
+      imagePullSecrets:
+        - name: registry-tools-3stripes-net-cred
       containers:
         - name: grafana-sc-dashboard
           image: "registry.tools.3stripes.net/pea-coreintegration/kiwigrid/k8s-sidecar:1.25.0"
           imagePullPolicy: IfNotPresent
-          imagePullSecrets:
-            - name: registry-tools-3stripes-net-cred
           env:
             - name: LABEL
               value: "grafana_dashboard"
@@ -20319,8 +20319,6 @@ spec:
         - name: grafana
           image: "registry.tools.3stripes.net/pea-coreintegration/grafana/grafana:9.4.7"
           imagePullPolicy: IfNotPresent
-          imagePullSecrets:
-            - name: registry-tools-3stripes-net-cred
           volumeMounts:
             - name: config
               mountPath: "/etc/grafana/grafana.ini"
@@ -20420,6 +20418,8 @@ spec:
       securityContext:
         fsGroup: 65534
         runAsUser: 65534
+      imagePullSecrets:
+        - name: registry-tools-3stripes-net-cred
       containers:
       - name: kube-state-metrics
         args:
@@ -20495,8 +20495,6 @@ spec:
 
         imagePullPolicy: IfNotPresent
         image: "registry.tools.3stripes.net/pea-coreintegration/registry.k8s.io/kube-state-metrics/kube-state-metrics:v1.9.8"
-        imagePullSecrets:
-          - name: registry-tools-3stripes-net-cred
         resources:
           limits:
             cpu: 200m
@@ -20550,12 +20548,12 @@ spec:
         heritage: Helm
     spec:
       serviceAccountName: kubecost-prometheus-server
+      imagePullSecrets:
+        - name: registry-tools-3stripes-net-cred
       containers:
         - name: prometheus-server-configmap-reload
           image: "registry.tools.3stripes.net/pea-coreintegration/jimmidyson/configmap-reload:v0.9.0"
           imagePullPolicy: "IfNotPresent"
-          imagePullSecrets:
-            - name: registry-tools-3stripes-net-cred
           args:
             - --volume-dir=/etc/config
             - --webhook-url=http://127.0.0.1:9090/-/reload
@@ -20574,8 +20572,6 @@ spec:
         - name: prometheus-server
           image: "registry.tools.3stripes.net/pea-coreintegration/quay.io/prometheus/prometheus:v2.35.0"
           imagePullPolicy: "IfNotPresent"
-          imagePullSecrets:
-            - name: registry-tools-3stripes-net-cred
           args:
             - --storage.tsdb.retention.time=15d
             - --config.file=/etc/config/prometheus.yml
@@ -20679,11 +20675,11 @@ spec:
         - name: persistent-configs
           persistentVolumeClaim:
             claimName: kubecost-cost-analyzer
+      imagePullSecrets:
+        - name: registry-tools-3stripes-net-cred
       initContainers:
       containers:
         - image: registry.tools.3stripes.net/pea-coreintegration/gcr.io/kubecost1/cost-model:prod-1.106.0
-          imagePullSecrets:
-            - name: registry-tools-3stripes-net-cred
           name: cost-model
           imagePullPolicy: Always
           ports:
@@ -20836,8 +20832,6 @@ spec:
                   name: kubecost-cost-analyzer
                   key: kubecost-token
         - image: registry.tools.3stripes.net/pea-coreintegration/gcr.io/kubecost1/frontend:prod-1.106.0
-          imagePullSecrets:
-            - name: registry-tools-3stripes-net-cred
           env:
             - name: GET_HOSTS_FROM
               value: dns
