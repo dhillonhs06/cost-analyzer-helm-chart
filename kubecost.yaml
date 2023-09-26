@@ -1,12 +1,12 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  labels:
-    kubernetes.io/metadata.name: kubecost
-    app.kubernetes.io/instance: kubecost
-    app: kubecost
-  name: kubecost
----
+# apiVersion: v1
+# kind: Namespace
+# metadata:
+#   labels:
+#     kubernetes.io/metadata.name: kubecost
+#     app.kubernetes.io/instance: kubecost
+#     app: kubecost
+#   name: kubecost
+# ---
 # Source: cost-analyzer/charts/grafana/templates/serviceaccount.yaml
 apiVersion: v1
 kind: ServiceAccount
@@ -17,7 +17,7 @@ metadata:
     heritage: Helm
     release: kubecost
   name: kubecost-grafana
-  namespace: kubecost
+  namespace: cite-mon-dev
 ---
 # Source: cost-analyzer/charts/prometheus/charts/kube-state-metrics/templates/serviceaccount.yaml
 apiVersion: v1
@@ -29,7 +29,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/instance: kubecost
   name: kubecost-kube-state-metrics
-  namespace: kubecost
+  namespace: cite-mon-dev
 imagePullSecrets:
   []
 ---
@@ -44,7 +44,7 @@ metadata:
     chart: prometheus-11.0.2
     heritage: Helm
   name: kubecost-prometheus-node-exporter
-  namespace: kubecost
+  namespace: cite-mon-dev
 ---
 # Source: cost-analyzer/charts/prometheus/templates/server-serviceaccount.yaml
 apiVersion: v1
@@ -57,14 +57,14 @@ metadata:
     chart: prometheus-11.0.2
     heritage: Helm
   name: kubecost-prometheus-server
-  namespace: kubecost
+  namespace: cite-mon-dev
 ---
 # Source: cost-analyzer/templates/cost-analyzer-service-account-template.yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: kubecost-cost-analyzer
-  namespace: kubecost
+  namespace: cite-mon-dev
   labels:
     
     app.kubernetes.io/name: cost-analyzer
@@ -78,7 +78,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: kubecost-grafana
-  namespace: kubecost
+  namespace: cite-mon-dev
   labels:
     app: grafana
     chart: grafana-1.17.2
@@ -100,7 +100,7 @@ metadata:
     release: kubecost
     heritage: Helm
   name: kubecost-grafana-config-dashboards
-  namespace: kubecost
+  namespace: cite-mon-dev
 data:
   provider.yaml: |-
     apiVersion: 1
@@ -118,7 +118,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: kubecost-grafana
-  namespace: kubecost
+  namespace: cite-mon-dev
   labels:
     app: grafana
     chart: grafana-1.17.2
@@ -169,7 +169,7 @@ metadata:
     chart: prometheus-11.0.2
     heritage: Helm
   name: kubecost-prometheus-server
-  namespace: kubecost
+  namespace: cite-mon-dev
 data:
   alerting_rules.yml: |
     {}
@@ -440,7 +440,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: kubecost-cost-analyzer
-  namespace: kubecost
+  namespace: cite-mon-dev
   labels:
     
     app.kubernetes.io/name: cost-analyzer
@@ -458,7 +458,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: nginx-conf
-  namespace: kubecost
+  namespace: cite-mon-dev
   labels:
     
     app.kubernetes.io/name: cost-analyzer
@@ -19622,7 +19622,7 @@ metadata:
     chart: prometheus-11.0.2
     heritage: Helm
   name: kubecost-prometheus-server
-  namespace: kubecost
+  namespace: cite-mon-dev
 spec:
   accessModes:
     - ReadWriteOnce
@@ -19635,7 +19635,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: kubecost-cost-analyzer
-  namespace: kubecost
+  namespace: cite-mon-dev
   labels:
     
     app.kubernetes.io/name: cost-analyzer
@@ -19926,7 +19926,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: kubecost-grafana
-    namespace: kubecost
+    namespace: cite-mon-dev
 roleRef:
   kind: ClusterRole
   name: kubecost-grafana-clusterrole
@@ -19949,7 +19949,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: kubecost-kube-state-metrics
-  namespace: kubecost
+  namespace: cite-mon-dev
 ---
 # Source: cost-analyzer/charts/prometheus/templates/server-clusterrolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -19965,7 +19965,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: kubecost-prometheus-server
-    namespace: kubecost
+    namespace: cite-mon-dev
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -19990,14 +19990,14 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: kubecost-cost-analyzer
-    namespace: kubecost
+    namespace: cite-mon-dev
 ---
 # Source: cost-analyzer/charts/grafana/templates/role.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: kubecost-grafana
-  namespace: kubecost
+  namespace: cite-mon-dev
   labels:
     app: grafana
     chart: grafana-1.17.2
@@ -20008,7 +20008,7 @@ metadata:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  namespace: kubecost
+  namespace: cite-mon-dev
   name: kubecost-cost-analyzer
   labels:
     
@@ -20032,7 +20032,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: kubecost-grafana
-  namespace: kubecost
+  namespace: cite-mon-dev
   labels:
     app: grafana
     chart: grafana-1.17.2
@@ -20051,7 +20051,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: kubecost-cost-analyzer
-  namespace: kubecost
+  namespace: cite-mon-dev
   labels:
     
     app.kubernetes.io/name: cost-analyzer
@@ -20066,14 +20066,14 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: kubecost-cost-analyzer
-    namespace: kubecost
+    namespace: cite-mon-dev
 ---
 # Source: cost-analyzer/charts/grafana/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
   name: kubecost-grafana
-  namespace: kubecost
+  namespace: cite-mon-dev
   labels:
     app: grafana
     chart: grafana-1.17.2
@@ -20096,7 +20096,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: kubecost-kube-state-metrics
-  namespace: kubecost
+  namespace: cite-mon-dev
   labels:
     app.kubernetes.io/name: kube-state-metrics
     helm.sh/chart: "kube-state-metrics-2.7.2"
@@ -20128,7 +20128,7 @@ metadata:
     chart: prometheus-11.0.2
     heritage: Helm
   name: kubecost-prometheus-node-exporter
-  namespace: kubecost
+  namespace: cite-mon-dev
 spec:
   clusterIP: None
   ports:
@@ -20153,7 +20153,7 @@ metadata:
     chart: prometheus-11.0.2
     heritage: Helm
   name: kubecost-prometheus-server
-  namespace: kubecost
+  namespace: cite-mon-dev
 spec:
   ports:
     - name: http
@@ -20172,7 +20172,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: kubecost-cost-analyzer
-  namespace: kubecost
+  namespace: cite-mon-dev
   labels:
     
     app.kubernetes.io/name: cost-analyzer
@@ -20206,7 +20206,7 @@ metadata:
     chart: prometheus-11.0.2
     heritage: Helm
   name: kubecost-prometheus-node-exporter
-  namespace: kubecost
+  namespace: cite-mon-dev
 spec:
   selector:
     matchLabels:
@@ -20228,8 +20228,10 @@ spec:
       dnsPolicy: "ClusterFirstWithHostNet"
       containers:
         - name: prometheus-node-exporter
-          image: "prom/node-exporter:v1.5.0"
+          image: "registry.tools.3stripes.net/pea-coreintegration/prom/node-exporter:v1.5.0"
           imagePullPolicy: "IfNotPresent"
+          imagePullSecrets:
+            - name: registry-tools-3stripes-net-cred
           args:
             - --path.procfs=/host/proc
             - --path.sysfs=/host/sys
@@ -20239,7 +20241,12 @@ spec:
               containerPort: 9100
               hostPort: 9100
           resources:
-            {}
+            limits:
+              cpu: 200m
+              memory: 50Mi
+            requests:
+              cpu: 100m
+              memory: 30Mi
           volumeMounts:
             - name: proc
               mountPath: /host/proc
@@ -20262,7 +20269,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kubecost-grafana
-  namespace: kubecost
+  namespace: cite-mon-dev
   labels:
     app: grafana
     chart: grafana-1.17.2
@@ -20288,8 +20295,10 @@ spec:
         runAsUser: 472
       containers:
         - name: grafana-sc-dashboard
-          image: "kiwigrid/k8s-sidecar:1.25.0"
+          image: "registry.tools.3stripes.net/pea-coreintegration/kiwigrid/k8s-sidecar:1.25.0"
           imagePullPolicy: IfNotPresent
+          imagePullSecrets:
+            - name: registry-tools-3stripes-net-cred
           env:
             - name: LABEL
               value: "grafana_dashboard"
@@ -20298,13 +20307,20 @@ spec:
             - name: ERROR_THROTTLE_SLEEP
               value: "0"
           resources:
-            null
+            limits:
+              cpu: 100m
+              memory: 100Mi
+            requests:
+              cpu: 50m
+              memory: 50Mi
           volumeMounts:
             - name: sc-dashboard-volume
               mountPath: "/tmp/dashboards"
         - name: grafana
-          image: "grafana/grafana:9.4.7"
+          image: "registry.tools.3stripes.net/pea-coreintegration/grafana/grafana:9.4.7"
           imagePullPolicy: IfNotPresent
+          imagePullSecrets:
+            - name: registry-tools-3stripes-net-cred
           volumeMounts:
             - name: config
               mountPath: "/etc/grafana/grafana.ini"
@@ -20353,7 +20369,12 @@ spec:
               path: /api/health
               port: 3000
           resources:
-            {}
+            limits:
+              cpu: 100m
+              memory: 100Mi
+            requests:
+              cpu: 50m
+              memory: 50Mi
       volumes:
         - name: config
           configMap:
@@ -20377,7 +20398,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kubecost-kube-state-metrics
-  namespace: kubecost
+  namespace: cite-mon-dev
   labels:
     app.kubernetes.io/name: kube-state-metrics
     helm.sh/chart: "kube-state-metrics-2.7.2"
@@ -20473,7 +20494,16 @@ spec:
 
 
         imagePullPolicy: IfNotPresent
-        image: "registry.k8s.io/kube-state-metrics/kube-state-metrics:v1.9.8"
+        image: "registry.tools.3stripes.net/pea-coreintegration/registry.k8s.io/kube-state-metrics/kube-state-metrics:v1.9.8"
+        imagePullSecrets:
+          - name: registry-tools-3stripes-net-cred
+        resources:
+          limits:
+            cpu: 200m
+            memory: 50Mi
+          requests:
+            cpu: 100m
+            memory: 30Mi
         ports:
         - containerPort: 8080
         livenessProbe:
@@ -20500,7 +20530,7 @@ metadata:
     chart: prometheus-11.0.2
     heritage: Helm
   name: kubecost-prometheus-server
-  namespace: kubecost
+  namespace: cite-mon-dev
 spec:
   selector:
     matchLabels:
@@ -20522,21 +20552,30 @@ spec:
       serviceAccountName: kubecost-prometheus-server
       containers:
         - name: prometheus-server-configmap-reload
-          image: "jimmidyson/configmap-reload:v0.7.1"
+          image: "registry.tools.3stripes.net/pea-coreintegration/jimmidyson/configmap-reload:v0.9.0"
           imagePullPolicy: "IfNotPresent"
+          imagePullSecrets:
+            - name: registry-tools-3stripes-net-cred
           args:
             - --volume-dir=/etc/config
             - --webhook-url=http://127.0.0.1:9090/-/reload
           resources:
-            {}
+            limits:
+              cpu: 20m
+              memory: 110Mi
+            requests:
+              cpu: 10m
+              memory: 110Mi
           volumeMounts:
             - name: config-volume
               mountPath: /etc/config
               readOnly: true
 
         - name: prometheus-server
-          image: "quay.io/prometheus/prometheus:v2.35.0"
+          image: "registry.tools.3stripes.net/pea-coreintegration/quay.io/prometheus/prometheus:v2.35.0"
           imagePullPolicy: "IfNotPresent"
+          imagePullSecrets:
+            - name: registry-tools-3stripes-net-cred
           args:
             - --storage.tsdb.retention.time=15d
             - --config.file=/etc/config/prometheus.yml
@@ -20565,7 +20604,12 @@ spec:
             failureThreshold: 3
             successThreshold: 1
           resources:
-            {}
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 500m
+              memory: 512Mi
           volumeMounts:
             - name: config-volume
               mountPath: /etc/config
@@ -20591,7 +20635,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kubecost-cost-analyzer
-  namespace: kubecost
+  namespace: cite-mon-dev
   labels:
     app.kubernetes.io/name: cost-analyzer
     helm.sh/chart: cost-analyzer-1.106.0
@@ -20637,8 +20681,9 @@ spec:
             claimName: kubecost-cost-analyzer
       initContainers:
       containers:
-        - image: gcr.io/kubecost1/cost-model:prod-1.106.0
-        
+        - image: registry.tools.3stripes.net/pea-coreintegration/gcr.io/kubecost1/cost-model:prod-1.106.0
+          imagePullSecrets:
+            - name: registry-tools-3stripes-net-cred
           name: cost-model
           imagePullPolicy: Always
           ports:
@@ -20652,6 +20697,9 @@ spec:
             requests:
               cpu: 200m
               memory: 55Mi
+            limits:
+              cpu: 400m
+              memory: 110Mi
           readinessProbe:
             httpGet:
               path: /healthz
@@ -20787,8 +20835,9 @@ spec:
                 configMapKeyRef:
                   name: kubecost-cost-analyzer
                   key: kubecost-token
-        - image: gcr.io/kubecost1/frontend:prod-1.106.0
-        
+        - image: registry.tools.3stripes.net/pea-coreintegration/gcr.io/kubecost1/frontend:prod-1.106.0
+          imagePullSecrets:
+            - name: registry-tools-3stripes-net-cred
           env:
             - name: GET_HOSTS_FROM
               value: dns
@@ -20802,6 +20851,9 @@ spec:
             requests:
               cpu: 10m
               memory: 55Mi
+            limits:
+              cpu: 20m
+              memory: 110Mi
           imagePullPolicy: Always
           readinessProbe:
             httpGet:
