@@ -20226,6 +20226,8 @@ spec:
     spec:
       serviceAccountName: kubecost-prometheus-node-exporter
       dnsPolicy: "ClusterFirstWithHostNet"
+      imagePullSecrets:
+        - name: registry-tools-3stripes-net-cred
       containers:
         - name: prometheus-node-exporter
           image: "registry.tools.3stripes.net/pea-coreintegration/prom/node-exporter:v1.5.0"
@@ -20240,11 +20242,11 @@ spec:
               hostPort: 9100
           resources:
             limits:
-              cpu: 200m
-              memory: 50Mi
+              cpu: 700m
+              memory: 768Mi
             requests:
-              cpu: 100m
-              memory: 30Mi
+              cpu: 500m
+              memory: 512Mi
           volumeMounts:
             - name: proc
               mountPath: /host/proc
@@ -20254,8 +20256,6 @@ spec:
               readOnly: true
       hostNetwork: true
       hostPID: true
-      imagePullSecrets:
-        - name: registry-tools-3stripes-net-cred
       volumes:
         - name: proc
           hostPath:
@@ -20294,6 +20294,7 @@ spec:
         fsGroup: 472
         runAsUser: 472
       imagePullSecrets:
+        - name: registry-tools-3stripes-net-cred
         - name: registry-tools-3stripes-net-cred
       containers:
         - name: grafana-sc-dashboard
@@ -20497,11 +20498,11 @@ spec:
         image: "registry.tools.3stripes.net/pea-coreintegration/registry.k8s.io/kube-state-metrics/kube-state-metrics:v1.9.8"
         resources:
           limits:
-            cpu: 200m
-            memory: 50Mi
+            cpu: 1000m
+            memory: 1024Mi
           requests:
-            cpu: 100m
-            memory: 30Mi
+            cpu: 700m
+            memory: 768Mi
         ports:
         - containerPort: 8080
         livenessProbe:
@@ -20601,11 +20602,11 @@ spec:
             successThreshold: 1
           resources:
             limits:
-              cpu: 500m
-              memory: 512Mi
+              cpu: 1000m
+              memory: 1024Mi
             requests:
-              cpu: 500m
-              memory: 512Mi
+              cpu: 700m
+              memory: 768Mi
           volumeMounts:
             - name: config-volume
               mountPath: /etc/config
@@ -20677,6 +20678,7 @@ spec:
             claimName: kubecost-cost-analyzer
       imagePullSecrets:
         - name: registry-tools-3stripes-net-cred
+        - name: registry-tools-3stripes-net-cred
       initContainers:
       containers:
         - image: registry.tools.3stripes.net/pea-coreintegration/gcr.io/kubecost1/cost-model:prod-1.106.0
@@ -20691,11 +20693,11 @@ spec:
             protocol: TCP
           resources:
             requests:
-              cpu: 200m
-              memory: 55Mi
+              cpu: 500m
+              memory: 512Mi
             limits:
-              cpu: 400m
-              memory: 110Mi
+              cpu: 700m
+              memory: 768Mi
           readinessProbe:
             httpGet:
               path: /healthz
@@ -20843,11 +20845,11 @@ spec:
               mountPath: /etc/nginx/conf.d/
           resources:
             requests:
-              cpu: 10m
-              memory: 55Mi
+              cpu: 500m
+              memory: 512Mi
             limits:
-              cpu: 20m
-              memory: 110Mi
+              cpu: 700m
+              memory: 768Mi
           imagePullPolicy: Always
           readinessProbe:
             httpGet:
