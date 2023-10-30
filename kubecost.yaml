@@ -20225,7 +20225,7 @@ spec:
         heritage: Helm
     spec:
       serviceAccountName: kubecost-prometheus-node-exporter
-      dnsPolicy: "ClusterFirstWithHostNet"
+      dnsPolicy: "ClusterFirst"
       imagePullSecrets:
         - name: registry-tools-3stripes-net-cred
       containers:
@@ -20254,8 +20254,6 @@ spec:
             - name: sys
               mountPath: /host/sys
               readOnly: true
-      hostNetwork: true
-      hostPID: true
       volumes:
         - name: proc
           hostPath:
@@ -20602,11 +20600,11 @@ spec:
             successThreshold: 1
           resources:
             limits:
+              cpu: 1500m
+              memory: 1536Mi
+            requests:
               cpu: 1000m
               memory: 1024Mi
-            requests:
-              cpu: 700m
-              memory: 768Mi
           volumeMounts:
             - name: config-volume
               mountPath: /etc/config
