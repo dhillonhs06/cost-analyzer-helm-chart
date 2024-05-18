@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    kubernetes.io/metadata.name: first-namespace
+    app.kubernetes.io/instance: first-namespace
+    app: first-namespace
+  name: first-namespace
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    kubernetes.io/metadata.name: second-namespace
+    app.kubernetes.io/instance: second-namespace
+    app: second-namespace
+  name: second-namespace

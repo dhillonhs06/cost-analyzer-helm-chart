@@ -1,0 +1,89 @@
+Last login: Fri Nov  3 11:41:11 on ttys003
+/Users/dhillhar/.zprofile:25: unmatched '
+dhillhar@INGUR1M0321 ~ % brew install --cask multipass
+
+--------Master Node---------------
+dhillhar@INGUR1M0321 ~ % multipass launch --name k3s --mem 4G --disk 40G
+dhillhar@INGUR1M0321 ~ % multipass info k3s
+dhillhar@INGUR1M0321 ~ % mkdir test/k8s
+dhillhar@INGUR1M0321 ~ % multipass mount ~/test/k8s k3s:~/k8s
+dhillhar@INGUR1M0321 ~ % multipass shell k3s
+ubuntu@k3s:~$ curl -sfL https://get.k3s.io | sh -
+ubuntu@k3s:~$ sudo chmod 777 /etc/rancher/k3s/k3s.yaml
+dhillhar@INGUR1M0321 ~ % multipass exec k3s sudo cat /var/lib/rancher/k3s/server/node-token
+dhillhar@INGUR1M0321 ~ % multipass info k3s | grep -i ip
+
+--------Worker Node 1---------------
+dhillhar@INGUR1M0321 ~ % multipass launch --name k3s-worker-01 --mem 2G --disk 20G
+dhillhar@INGUR1M0321 ~ % multipass shell k3s-worker-01
+ubuntu@k3s-worker-01:~$ curl -sfL https://get.k3s.io | K3S_URL=https://192.168.205.10:6443 K3S_TOKEN="K106c96963b660ce301d9780aac843dfc063f6b4e6d97b3403aad8154a497d8daa4::server:3a0779f1032db5d75159ad3e457fd6a6" sh -
+
+--------Worker Node 2---------------
+dhillhar@INGUR1M0321 ~ % multipass launch --name k3s-worker-02 --mem 2G --disk 20G
+dhillhar@INGUR1M0321 ~ % multipass shell k3s-worker-02                            
+ubuntu@k3s-worker-02:~$ curl -sfL https://get.k3s.io | K3S_URL=https://192.168.205.10:6443 K3S_TOKEN="K106c96963b660ce301d9780aac843dfc063f6b4e6d97b3403aad8154a497d8daa4::server:3a0779f1032db5d75159ad3e457fd6a6" sh -
+
+
+dhillhar@INGUR1M0321 ~ % multipass shell k3s                                      
+ubuntu@k3s:~$ kubectl label node k3s-worker-01 node-role.kubernetes.io/node=''
+ubuntu@k3s:~$ kubectl label node k3s-worker-02 node-role.kubernetes.io/node=''
+
+ubuntu@k3s:~$ kubectl get nodes
+NAME            STATUS   ROLES                  AGE     VERSION
+k3s             Ready    control-plane,master   13m     v1.27.7+k3s1
+k3s-worker-01   Ready    node                   7m25s   v1.27.7+k3s1
+k3s-worker-02   Ready    node                   2m      v1.27.7+k3s1
+
+ubuntu@k3s:~$ export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+
+ubuntu@k3s:~/k8s$ kubectl apply -f namespace.yaml
+namespace/dummy-namespace created
+ubuntu@k3s:~/k8s$ kubectl get namespaces
+NAME              STATUS   AGE
+default           Active   17m
+kube-system       Active   17m
+kube-public       Active   17m
+kube-node-lease   Active   17m
+dummy-namespace   Active   17s
+ubuntu@k3s:~/k8s$ kubectl run nginx --image=nginx --restart=Never -n dummy-namespace
+pod/nginx created
+ubuntu@k3s:~/k8s$ kubectl run busybox --image=busybox --restart=Never -n dummy-namespace
+pod/busybox created
+ubuntu@k3s:~/k8s$ kubectl get pods -A
+NAMESPACE         NAME                                     READY   STATUS      RESTARTS   AGE
+kube-system       local-path-provisioner-957fdf8bc-v6sp8   1/1     Running     0          18m
+kube-system       coredns-77ccd57875-xhztg                 1/1     Running     0          18m
+kube-system       helm-install-traefik-crd-w9fs2           0/1     Completed   0          18m
+kube-system       helm-install-traefik-qxjfc               0/1     Completed   1          18m
+kube-system       metrics-server-648b5df564-cl5rd          1/1     Running     0          18m
+kube-system       svclb-traefik-0e5d94de-hfz6v             2/2     Running     0          17m
+kube-system       traefik-7fbbb44c44-8cjpq                 1/1     Running     0          17m
+kube-system       svclb-traefik-0e5d94de-mhwz6             2/2     Running     0          12m
+kube-system       svclb-traefik-0e5d94de-c8xng             2/2     Running     0          6m55s
+dummy-namespace   nginx                                    1/1     Running     0          30s
+dummy-namespace   busybox                                  0/1     Completed   0          10s
+
+ubuntu@k3s:~/k8s$ helm upgrade --install kubecost -n kubecost --create-namespace --repo https://kubecost.github.io/cost-analyzer/ cost-analyzer --set kubecostToken="aGVsbUBrdWJlY29zdC5jb20=xm343yadf98"
+WARNING: Kubernetes configuration file is group-readable. This is insecure. Location: /etc/rancher/k3s/k3s.yaml
+WARNING: Kubernetes configuration file is world-readable. This is insecure. Location: /etc/rancher/k3s/k3s.yaml
+Release "kubecost" does not exist. Installing it now.
+NAME: kubecost
+LAST DEPLOYED: Sat Nov  4 08:17:14 2023
+NAMESPACE: kubecost
+STATUS: deployed
+REVISION: 1
+NOTES:
+--------------------------------------------------
+Kubecost 1.107.0 has been successfully installed.
+
+Please allow 5-10 minutes for Kubecost to gather metrics.
+
+When configured, cost reconciliation with cloud provider billing data will have a 48 hour delay.
+
+When pods are Ready, you can enable port-forwarding with the following command:
+
+    kubectl port-forward --namespace kubecost deployment/kubecost-cost-analyzer 9090
+
+Then, navigate to http://localhost:9090 in a web browser.
+
+Having installation issues? View our Troubleshooting Guide at http://docs.kubecost.com/troubleshoot-install

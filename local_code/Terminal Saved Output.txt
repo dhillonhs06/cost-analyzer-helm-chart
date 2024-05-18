@@ -1,0 +1,540 @@
+Last login: Sat Nov  4 07:52:07 on ttys001
+/Users/dhillhar/.zprofile:25: unmatched '
+dhillhar@INGUR1M0321 ~ % brew list         
+==> Formulae
+brotli			gdbm			helm			libpng			libxau			make			node@14			prometheus		sqlite
+c-ares			gettext			icu4c			libslirp		libxcb			maven			node@16			putty			terraform
+ca-certificates		giflib			jpeg-turbo		libssh			libxdmcp		mongodb-community	openjdk			python@3.10		unbound
+cairo			glib			kubectx			libtasn1		libxext			mongodb-database-tools	openjdk@17		python@3.9		vde
+capstone		gmp			kubelogin		libtiff			libxrender		mongosh			openssl@1.1		qemu			xorgproto
+dtc			gnutls			kubernetes-cli		libunistring		little-cms2		mpdecimal		openssl@3		readline		xz
+fontconfig		grafana			libevent		libusb			lz4			ncurses			p11-kit			scala			zstd
+freetype		graphite2		libidn2			libuv			lzo			nettle			pcre2			six
+fzf			harfbuzz		libnghttp2		libx11			macos-term-size		node			pixman			snappy
+
+==> Casks
+confluent-hub-client	hashicorp-vagrant	multipass
+dhillhar@INGUR1M0321 ~ % brew uninstall qemu
+Uninstalling /opt/homebrew/Cellar/qemu/8.1.2... (162 files, 535.3MB)
+dhillhar@INGUR1M0321 ~ % multipass launch --name k3s --mem 4G --disk 40G
+warning: "--mem" long option will be deprecated in favour of "--memory" in a future release. Please update any scripts, etc.
+Launched: k3s
+dhillhar@INGUR1M0321 ~ % multipass info k3s
+Name:           k3s
+State:          Running
+IPv4:           192.168.205.6
+Release:        Ubuntu 22.04.3 LTS
+Image hash:     eafa7742ce5f (Ubuntu 22.04 LTS)
+CPU(s):         1
+Load:           0.42 0.12 0.04
+Disk usage:     1.4GiB out of 38.7GiB
+Memory usage:   129.9MiB out of 3.8GiB
+Mounts:         --
+dhillhar@INGUR1M0321 ~ % multipass mount ~/test/k8s k3s:~/k8s
+dhillhar@INGUR1M0321 ~ % multipass info k3s                  
+Name:           k3s
+State:          Running
+IPv4:           192.168.205.6
+Release:        Ubuntu 22.04.3 LTS
+Image hash:     eafa7742ce5f (Ubuntu 22.04 LTS)
+CPU(s):         1
+Load:           0.22 0.11 0.04
+Disk usage:     1.4GiB out of 38.7GiB
+Memory usage:   137.3MiB out of 3.8GiB
+Mounts:         /Users/dhillhar/test/k8s => ~/k8s
+                    UID map: 1229538358:default
+                    GID map: 722527487:default
+dhillhar@INGUR1M0321 ~ % multipass shell k3s
+Welcome to Ubuntu 22.04.3 LTS (GNU/Linux 5.15.0-87-generic aarch64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Sat Nov  4 07:55:47 IST 2023
+
+  System load:             0.1826171875
+  Usage of /:              3.6% of 38.59GB
+  Memory usage:            4%
+  Swap usage:              0%
+  Processes:               97
+  Users logged in:         0
+  IPv4 address for enp0s1: 192.168.205.6
+  IPv6 address for enp0s1: fd88:d6f2:69a2:cf1a:5054:ff:fe84:c241
+
+
+Expanded Security Maintenance for Applications is not enabled.
+
+0 updates can be applied immediately.
+
+Enable ESM Apps to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
+
+
+The list of available updates is more than a week old.
+To check for new updates run: sudo apt update
+
+ubuntu@k3s:~$ curl -sfL https://get.k3s.io | sh -
+[INFO]  Finding release for channel stable
+[INFO]  Using v1.27.7+k3s1 as release
+[INFO]  Downloading hash https://github.com/k3s-io/k3s/releases/download/v1.27.7+k3s1/sha256sum-arm64.txt
+[INFO]  Downloading binary https://github.com/k3s-io/k3s/releases/download/v1.27.7+k3s1/k3s-arm64
+[INFO]  Verifying binary download
+[INFO]  Installing k3s to /usr/local/bin/k3s
+[INFO]  Skipping installation of SELinux RPM
+[INFO]  Creating /usr/local/bin/kubectl symlink to k3s
+[INFO]  Creating /usr/local/bin/crictl symlink to k3s
+[INFO]  Creating /usr/local/bin/ctr symlink to k3s
+[INFO]  Creating killall script /usr/local/bin/k3s-killall.sh
+[INFO]  Creating uninstall script /usr/local/bin/k3s-uninstall.sh
+[INFO]  env: Creating environment file /etc/systemd/system/k3s.service.env
+[INFO]  systemd: Creating service file /etc/systemd/system/k3s.service
+sh: 970: restorecon: not found
+sh: 971: restorecon: not found
+[INFO]  systemd: Enabling k3s unit
+Created symlink /etc/systemd/system/multi-user.target.wants/k3s.service → /etc/systemd/system/k3s.service.
+[INFO]  systemd: Starting k3s
+ubuntu@k3s:~$ ls -lart /etc/rancher/k3s/k3s.yaml
+-rw------- 1 root root 2957 Nov  4 07:56 /etc/rancher/k3s/k3s.yaml
+ubuntu@k3s:~$ sudo chmod 777 /etc/rancher/k3s/k3s.yaml
+ubuntu@k3s:~$ ls -lart /etc/rancher/k3s/k3s.yaml
+-rwxrwxrwx 1 root root 2957 Nov  4 07:56 /etc/rancher/k3s/k3s.yaml
+ubuntu@k3s:~$ kubectl get pods -A
+NAMESPACE     NAME                                     READY   STATUS      RESTARTS   AGE
+kube-system   local-path-provisioner-957fdf8bc-v6sp8   1/1     Running     0          93s
+kube-system   coredns-77ccd57875-xhztg                 1/1     Running     0          93s
+kube-system   helm-install-traefik-crd-w9fs2           0/1     Completed   0          93s
+kube-system   helm-install-traefik-qxjfc               0/1     Completed   1          93s
+kube-system   metrics-server-648b5df564-cl5rd          1/1     Running     0          93s
+kube-system   svclb-traefik-0e5d94de-hfz6v             2/2     Running     0          60s
+kube-system   traefik-7fbbb44c44-8cjpq                 1/1     Running     0          60s
+ubuntu@k3s:~$ helm
+Command 'helm' not found, but can be installed with:
+sudo snap install helm
+ubuntu@k3s:~$ 
+logout
+dhillhar@INGUR1M0321 ~ % multipass exec k3s sudo cat /var/lib/rancher/k3s/server/node-token
+K100e187fb7e72f4434322a05068fdb1b42651ceaecd58e7a1c5125a9f71120186c::server:dd580f5533a2546913576f84a5516367
+dhillhar@INGUR1M0321 ~ % multipass info k3s | grep -i ip
+IPv4:           192.168.205.6
+dhillhar@INGUR1M0321 ~ % multipass launch --name k3s-worker-01 --mem 2G --disk 20G
+warning: "--mem" long option will be deprecated in favour of "--memory" in a future release. Please update any scripts, etc.
+Launched: k3s-worker-01
+dhillhar@INGUR1M0321 ~ % multipass shell k3s-worker-01
+Welcome to Ubuntu 22.04.3 LTS (GNU/Linux 5.15.0-87-generic aarch64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Sat Nov  4 08:01:47 IST 2023
+
+  System load:             0.48828125
+  Usage of /:              7.2% of 19.21GB
+  Memory usage:            9%
+  Swap usage:              0%
+  Processes:               90
+  Users logged in:         0
+  IPv4 address for enp0s1: 192.168.205.7
+  IPv6 address for enp0s1: fd88:d6f2:69a2:cf1a:5054:ff:fe97:be64
+
+
+Expanded Security Maintenance for Applications is not enabled.
+
+0 updates can be applied immediately.
+
+Enable ESM Apps to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
+
+
+The list of available updates is more than a week old.
+To check for new updates run: sudo apt update
+
+To run a command as administrator (user "root"), use "sudo <command>".
+See "man sudo_root" for details.
+
+ubuntu@k3s-worker-01:~$ curl -sfL https://get.k3s.io | K3S_URL=https://192.168.205.6:6443 K3S_TOKEN="K100e187fb7e72f4434322a05068fdb1b42651ceaecd58e7a1c5125a9f71120186c::server:dd580f5533a2546913576f84a5516367" sh -
+[INFO]  Finding release for channel stable
+[INFO]  Using v1.27.7+k3s1 as release
+[INFO]  Downloading hash https://github.com/k3s-io/k3s/releases/download/v1.27.7+k3s1/sha256sum-arm64.txt
+[INFO]  Downloading binary https://github.com/k3s-io/k3s/releases/download/v1.27.7+k3s1/k3s-arm64
+[INFO]  Verifying binary download
+[INFO]  Installing k3s to /usr/local/bin/k3s
+[INFO]  Skipping installation of SELinux RPM
+[INFO]  Creating /usr/local/bin/kubectl symlink to k3s
+[INFO]  Creating /usr/local/bin/crictl symlink to k3s
+[INFO]  Creating /usr/local/bin/ctr symlink to k3s
+[INFO]  Creating killall script /usr/local/bin/k3s-killall.sh
+[INFO]  Creating uninstall script /usr/local/bin/k3s-agent-uninstall.sh
+[INFO]  env: Creating environment file /etc/systemd/system/k3s-agent.service.env
+[INFO]  systemd: Creating service file /etc/systemd/system/k3s-agent.service
+sh: 970: restorecon: not found
+sh: 971: restorecon: not found
+[INFO]  systemd: Enabling k3s-agent unit
+Created symlink /etc/systemd/system/multi-user.target.wants/k3s-agent.service → /etc/systemd/system/k3s-agent.service.
+[INFO]  systemd: Starting k3s-agent
+ubuntu@k3s-worker-01:~$ 
+logout
+dhillhar@INGUR1M0321 ~ % multipass launch --name k3s-worker-02 --mem 2G --disk 20G
+warning: "--mem" long option will be deprecated in favour of "--memory" in a future release. Please update any scripts, etc.
+Launched: k3s-worker-02
+dhillhar@INGUR1M0321 ~ % multipass shell k3s-worker-02                            
+Welcome to Ubuntu 22.04.3 LTS (GNU/Linux 5.15.0-87-generic aarch64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Sat Nov  4 08:06:49 IST 2023
+
+  System load:             0.3623046875
+  Usage of /:              7.2% of 19.21GB
+  Memory usage:            8%
+  Swap usage:              0%
+  Processes:               89
+  Users logged in:         0
+  IPv4 address for enp0s1: 192.168.205.8
+  IPv6 address for enp0s1: fd88:d6f2:69a2:cf1a:5054:ff:fe5a:186
+
+
+Expanded Security Maintenance for Applications is not enabled.
+
+0 updates can be applied immediately.
+
+Enable ESM Apps to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
+
+
+The list of available updates is more than a week old.
+To check for new updates run: sudo apt update
+
+To run a command as administrator (user "root"), use "sudo <command>".
+See "man sudo_root" for details.
+
+ubuntu@k3s-worker-02:~$ curl -sfL https://get.k3s.io | K3S_URL=https://192.168.205.6:6443 K3S_TOKEN="K100e187fb7e72f4434322a05068fdb1b42651ceaecd58e7a1c5125a9f71120186c::server:dd580f5533a2546913576f84a5516367" sh -
+[INFO]  Finding release for channel stable
+[INFO]  Using v1.27.7+k3s1 as release
+[INFO]  Downloading hash https://github.com/k3s-io/k3s/releases/download/v1.27.7+k3s1/sha256sum-arm64.txt
+[INFO]  Downloading binary https://github.com/k3s-io/k3s/releases/download/v1.27.7+k3s1/k3s-arm64
+[INFO]  Verifying binary download
+[INFO]  Installing k3s to /usr/local/bin/k3s
+[INFO]  Skipping installation of SELinux RPM
+[INFO]  Creating /usr/local/bin/kubectl symlink to k3s
+[INFO]  Creating /usr/local/bin/crictl symlink to k3s
+[INFO]  Creating /usr/local/bin/ctr symlink to k3s
+[INFO]  Creating killall script /usr/local/bin/k3s-killall.sh
+[INFO]  Creating uninstall script /usr/local/bin/k3s-agent-uninstall.sh
+[INFO]  env: Creating environment file /etc/systemd/system/k3s-agent.service.env
+[INFO]  systemd: Creating service file /etc/systemd/system/k3s-agent.service
+sh: 970: restorecon: not found
+sh: 971: restorecon: not found
+[INFO]  systemd: Enabling k3s-agent unit
+Created symlink /etc/systemd/system/multi-user.target.wants/k3s-agent.service → /etc/systemd/system/k3s-agent.service.
+[INFO]  systemd: Starting k3s-agent
+ubuntu@k3s-worker-02:~$ 
+logout
+dhillhar@INGUR1M0321 ~ % multipass shell k3s                                               
+Welcome to Ubuntu 22.04.3 LTS (GNU/Linux 5.15.0-87-generic aarch64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Sat Nov  4 07:59:45 IST 2023
+
+  System load:             0.677734375
+  Usage of /:              6.1% of 38.59GB
+  Memory usage:            18%
+  Swap usage:              0%
+  Processes:               111
+  Users logged in:         0
+  IPv4 address for cni0:   10.42.0.1
+  IPv4 address for enp0s1: 192.168.205.6
+  IPv6 address for enp0s1: fd88:d6f2:69a2:cf1a:5054:ff:fe84:c241
+
+
+Expanded Security Maintenance for Applications is not enabled.
+
+0 updates can be applied immediately.
+
+Enable ESM Apps to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
+
+
+The list of available updates is more than a week old.
+To check for new updates run: sudo apt update
+
+Last login: Sat Nov  4 07:59:45 2023 from 192.168.205.1
+ubuntu@k3s:~$ kubectl get nodes
+NAME            STATUS   ROLES                  AGE     VERSION
+k3s             Ready    control-plane,master   12m     v1.27.7+k3s1
+k3s-worker-01   Ready    <none>                 6m10s   v1.27.7+k3s1
+k3s-worker-02   Ready    <none>                 45s     v1.27.7+k3s1
+ubuntu@k3s:~$ kubectl label node k3s-worker-01 node-role.kubernetes.io/node=””
+error: invalid label value: "node-role.kubernetes.io/node=””": a valid label must be an empty string or consist of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character (e.g. 'MyValue',  or 'my_value',  or '12345', regex used for validation is '(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?')
+ubuntu@k3s:~$ kubectl label node k3s-worker-01 node-role.kubernetes.io/node=''
+node/k3s-worker-01 labeled
+ubuntu@k3s:~$ kubectl get nodes
+NAME            STATUS   ROLES                  AGE    VERSION
+k3s             Ready    control-plane,master   13m    v1.27.7+k3s1
+k3s-worker-02   Ready    <none>                 103s   v1.27.7+k3s1
+k3s-worker-01   Ready    node                   7m8s   v1.27.7+k3s1
+ubuntu@k3s:~$ kubectl label node k3s-worker-02 node-role.kubernetes.io/node=''
+node/k3s-worker-02 labeled
+ubuntu@k3s:~$ kubectl get nodes
+NAME            STATUS   ROLES                  AGE     VERSION
+k3s             Ready    control-plane,master   13m     v1.27.7+k3s1
+k3s-worker-01   Ready    node                   7m25s   v1.27.7+k3s1
+k3s-worker-02   Ready    node                   2m      v1.27.7+k3s1
+ubuntu@k3s:~$ export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+ubuntu@k3s:~$ ls k8s/
+ kubecost.yaml   namespace.yaml  'steps so far.txt'
+ubuntu@k3s:~$ kubectl apply -f namespace.yaml
+error: the path "namespace.yaml" does not exist
+ubuntu@k3s:~$ cd k8s
+ubuntu@k3s:~/k8s$ kubectl apply -f namespace.yaml
+namespace/dummy-namespace created
+ubuntu@k3s:~/k8s$ kubectl get namespaces
+NAME              STATUS   AGE
+default           Active   17m
+kube-system       Active   17m
+kube-public       Active   17m
+kube-node-lease   Active   17m
+dummy-namespace   Active   17s
+ubuntu@k3s:~/k8s$ kubectl run nginx --image=nginx --restart=Never -n dummy-namespace
+pod/nginx created
+ubuntu@k3s:~/k8s$ kubectl run busybox --image=busybox --restart=Never -n dummy-namespace
+pod/busybox created
+ubuntu@k3s:~/k8s$ kubectl get pods -A
+NAMESPACE         NAME                                     READY   STATUS      RESTARTS   AGE
+kube-system       local-path-provisioner-957fdf8bc-v6sp8   1/1     Running     0          18m
+kube-system       coredns-77ccd57875-xhztg                 1/1     Running     0          18m
+kube-system       helm-install-traefik-crd-w9fs2           0/1     Completed   0          18m
+kube-system       helm-install-traefik-qxjfc               0/1     Completed   1          18m
+kube-system       metrics-server-648b5df564-cl5rd          1/1     Running     0          18m
+kube-system       svclb-traefik-0e5d94de-hfz6v             2/2     Running     0          17m
+kube-system       traefik-7fbbb44c44-8cjpq                 1/1     Running     0          17m
+kube-system       svclb-traefik-0e5d94de-mhwz6             2/2     Running     0          12m
+kube-system       svclb-traefik-0e5d94de-c8xng             2/2     Running     0          6m55s
+dummy-namespace   nginx                                    1/1     Running     0          30s
+dummy-namespace   busybox                                  0/1     Completed   0          10s
+ubuntu@k3s:~/k8s$ hekm
+Command 'hekm' not found, did you mean:
+  command 'helm' from snap helm (3.10.1)
+See 'snap info <snapname>' for additional versions.
+ubuntu@k3s:~/k8s$ helm
+Command 'helm' not found, but can be installed with:
+sudo snap install helm
+ubuntu@k3s:~/k8s$ sudo snap install helm
+error: This revision of snap "helm" was published using classic confinement and thus may perform
+       arbitrary system changes outside of the security sandbox that snaps are usually confined to,
+       which may put your system at risk.
+
+       If you understand and want to proceed repeat the command including --classic.
+ubuntu@k3s:~/k8s$ sudo snap install helm --classic
+helm 3.10.1 from Snapcrafters✪ installed
+ubuntu@k3s:~/k8s$ helm upgrade --install kubecost -n kubecost --create-namespace --repo https://kubecost.github.io/cost-analyzer/ cost-analyzer --set kubecostToken="aGVsbUBrdWJlY29zdC5jb20=xm343yadf98"
+WARNING: Kubernetes configuration file is group-readable. This is insecure. Location: /etc/rancher/k3s/k3s.yaml
+WARNING: Kubernetes configuration file is world-readable. This is insecure. Location: /etc/rancher/k3s/k3s.yaml
+Release "kubecost" does not exist. Installing it now.
+NAME: kubecost
+LAST DEPLOYED: Sat Nov  4 08:17:14 2023
+NAMESPACE: kubecost
+STATUS: deployed
+REVISION: 1
+NOTES:
+--------------------------------------------------
+Kubecost 1.107.0 has been successfully installed.
+
+Please allow 5-10 minutes for Kubecost to gather metrics.
+
+When configured, cost reconciliation with cloud provider billing data will have a 48 hour delay.
+
+When pods are Ready, you can enable port-forwarding with the following command:
+
+    kubectl port-forward --namespace kubecost deployment/kubecost-cost-analyzer 9090
+
+Then, navigate to http://localhost:9090 in a web browser.
+
+Having installation issues? View our Troubleshooting Guide at http://docs.kubecost.com/troubleshoot-install
+ubuntu@k3s:~/k8s$ kubectl port-forward --namespace kubecost deployment/kubecost-cost-analyzer 9090 --address="0.0.0.0"
+Forwarding from 0.0.0.0:9090 -> 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+Handling connection for 9090
+^Cubuntu@k3s:~/k8s$ 
+logout
+dhillhar@INGUR1M0321 ~ % 

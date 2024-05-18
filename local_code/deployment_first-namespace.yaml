@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  namespace: first-namespace
+spec:
+  selector:
+    matchLabels:
+      name: "nginx"
+  template:
+    metadata:
+      labels:
+        name: "nginx"
+    spec:
+      containers:
+        - name: nginx
+          image: nginxinc/nginx-unprivileged
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+                drop:
+                - ALL
+          resources:
+            limits:
+              cpu: 200m
+              memory: 200Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi
+      hostNetwork: true
+      hostPID: true
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world
+  namespace: first-namespace
+spec:
+  selector:
+    matchLabels:
+      name: "hello-world"
+  template:
+    metadata:
+      labels:
+        name: "hello-world"
+    spec:
+      containers:
+        - name: hello-world
+          image: hello-world
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+                drop:
+                - ALL
+          resources:
+            limits:
+              cpu: 200m
+              memory: 200Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi
+      hostNetwork: true
+      hostPID: true
